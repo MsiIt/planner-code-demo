@@ -1,0 +1,24 @@
+#!/bin/sh
+
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
+cd "$parent_path"
+
+mkdir build
+cd android
+
+sh ./gradlew assembleRelease
+sh ./gradlew bundleRelease
+
+rm ../build/*
+
+mv ./app/build/outputs/apk/release/* ../build/
+mv ./app/build/outputs/bundle/release/* ../build/
+
+cd ../build
+
+versionName=$(cat output-metadata.json | grep -o '"versionName": "[^"]*"' | awk -F ': ' '{print $2}' | tr -d '"')
+
+mv app-release.apk "app_v${versionName}.apk"
+mv app-release.aab "app_v${versionName}.aab"
+
+

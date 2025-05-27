@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        overflow-x: auto;
+        display: flex;
+        padding: 0 24px;
+      }
+
+      .el {
+        background-color: violet;
+        width: calc(var(--size) * 1px);
+        height: calc(var(--size) * 1px);
+        flex-shrink: 0;
+      }
+
+      .el ~ .el {
+        margin-left: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+      <div class="el"></div>
+    </div>
+
+    <script>
+      function calculateSize(wWidth, baseWidth = 152, hPadding = 24, gap = 16) {
+        // Вычисляем максимальное количество элементов, которое может поместиться на экране
+        const maxElements = (wWidth - hPadding) / (baseWidth + gap)
+        let size = baseWidth
+
+        const decimal = maxElements % 1
+        if (decimal > 0.85 || decimal < 0.1) {
+          size -= 15
+        }
+
+        return size
+      }
+
+      const setSize = wWidth => {
+        const size = calculateSize(wWidth, 152, 24, 16)
+        document.querySelectorAll('.el').forEach(el => {
+          el.style.setProperty('--size', size)
+        })
+      }
+
+      window.addEventListener('resize', e => {
+        setSize(window.innerWidth)
+      })
+
+      setSize(window.innerWidth)
+    </script>
+  </body>
+</html>
